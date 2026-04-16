@@ -3360,14 +3360,17 @@ function toggleAuthMode() {
 }
 
 function editNames() {
-  const cur_user = localStorage.getItem('xuxu_user_name') || '西西';
-  const cur_bot = localStorage.getItem('xuxu_bot_name') || '嘘嘘';
-  const html = `<div id="nameEditPanel" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;padding:28px 32px;box-shadow:0 8px 40px rgba(0,0,0,0.15);z-index:9999;min-width:320px;">
-    <h3 style="font-size:16px;font-weight:700;margin-bottom:20px;">✏️ 修改名字</h3>
+  const cur_user = localStorage.getItem('xuxu_user_name') || '小明';
+  const cur_bot = localStorage.getItem('xuxu_bot_name') || '小助手';
+  const cur_key = localStorage.getItem('xuxu_zhipu_key') || '';
+  const html = `<div id="nameEditPanel" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;padding:28px 32px;box-shadow:0 8px 40px rgba(0,0,0,0.15);z-index:9999;min-width:340px;">
+    <h3 style="font-size:16px;font-weight:700;margin-bottom:20px;">⚙️ 个人设置</h3>
     <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;">你的名字</label>
-    <input class="modal-input" id="nameEditUser" value="${cur_user}" placeholder="如：西西" style="margin-bottom:14px;">
+    <input class="modal-input" id="nameEditUser" value="${cur_user}" placeholder="如：小明" style="margin-bottom:14px;">
     <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;">AI 秘书的名字</label>
-    <input class="modal-input" id="nameEditBot" value="${cur_bot}" placeholder="如：嘘嘘" style="margin-bottom:20px;">
+    <input class="modal-input" id="nameEditBot" value="${cur_bot}" placeholder="如：小助手" style="margin-bottom:14px;">
+    <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;">🔑 智谱 AI Key <span style="color:var(--text-faint);font-size:11px;">（AI 功能需要，<a href="https://open.bigmodel.cn/usercenter/apikeys" target="_blank" style="color:var(--stream-blue);">免费申请</a>）</span></label>
+    <input class="modal-input" id="nameEditKey" value="${cur_key}" placeholder="粘贴你的智谱 API Key" style="margin-bottom:20px;" type="password">
     <div style="display:flex;gap:10px;">
       <button class="modal-btn" onclick="saveNames()" style="flex:1;">保存</button>
       <button onclick="document.getElementById('nameEditPanel').remove();document.getElementById('nameEditOverlay').remove();" style="background:var(--warm-gray-bg);border:none;border-radius:8px;padding:8px 18px;cursor:pointer;color:var(--text-secondary);">取消</button>
@@ -3381,12 +3384,14 @@ function editNames() {
 function saveNames() {
   const uname = document.getElementById('nameEditUser').value.trim();
   const bname = document.getElementById('nameEditBot').value.trim();
+  const key = document.getElementById('nameEditKey').value.trim();
   if (uname) localStorage.setItem('xuxu_user_name', uname);
   if (bname) {
     localStorage.setItem('xuxu_bot_name', bname);
     document.getElementById('logoText').textContent = '我是' + bname;
     document.title = bname + ' - 你的电子秘书';
   }
+  if (key) localStorage.setItem('xuxu_zhipu_key', key);
   document.getElementById('nameEditPanel').remove();
   document.getElementById('nameEditOverlay').remove();
   document.getElementById('greetingText').textContent = getGreeting();
