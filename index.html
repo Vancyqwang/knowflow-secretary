@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>嘘嘘 Xūxū - 你的电子秘书</title>
+<title>KnowFlow - 你的电子秘书</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Noto+Serif+SC:wght@400;600;700&family=LXGW+WenKai:wght@400;700&display=swap" rel="stylesheet">
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
@@ -1137,7 +1137,7 @@ body {
 <!-- Sidebar -->
 <nav class="sidebar" id="sidebar">
   <div class="sidebar-logo">
-    <span class="logo-text" id="logoText" onclick="editNames()" title="点击修改名字" style="cursor:pointer;">我是嘘嘘</span>
+    <span class="logo-text" id="logoText" onclick="editNames()" title="点击修改名字" style="cursor:pointer;">我是小助手</span>
     <button class="sidebar-toggle" id="sidebarToggle" onclick="toggleSidebar()" title="收缩/展开">◀</button>
   </div>
   <a class="nav-item active" data-panel="dashboard">
@@ -1181,7 +1181,7 @@ body {
 <!-- Auth Modal -->
 <div class="modal-overlay" id="authModal">
   <div class="modal-box">
-    <h2>🤫 嘘嘘</h2>
+    <h2>🤫 KnowFlow</h2>
     <p class="modal-sub">你的电子秘书，随时待命</p>
     <div id="authForm">
       <input class="modal-input" id="authEmail" type="email" placeholder="邮箱">
@@ -1307,7 +1307,7 @@ body {
 <div class="panel active" id="panel-dashboard">
   <div class="greeting-bar">
     <div class="greeting-text">
-      <h1 id="greetingText">下午好，西西 ☀️</h1>
+      <h1 id="greetingText">下午好 ☀️</h1>
       <div class="slogan">「没有宏大的目标，你要做的只是每天按时出摊」</div>
       <div class="date-line" id="dateLine"></div>
     </div>
@@ -1346,7 +1346,7 @@ body {
   <div class="insight-section">
     <div class="insight-header">
       <h3>🤖 学习成果看板</h3>
-      <p>选择领域和时间段，嘘嘘帮你总结学习成果</p>
+      <p>选择领域和时间段，AI 帮你总结学习成果</p>
     </div>
     <div class="insight-controls">
       <select class="insight-select" id="insightDomain">
@@ -1500,7 +1500,7 @@ body {
 
     <div class="echo-quote-card">
       <div class="echo-quote-text" id="echoQuoteText">"工作只是人类发明的一种生存方式。几百年前大部分人种地，后来去工厂，再后来坐办公室。每次变革都有人焦虑，但人类并没有因此失去意义。"</div>
-      <div class="echo-quote-author" id="echoQuoteAuthor">— 嘘嘘</div>
+      <div class="echo-quote-author" id="echoQuoteAuthor">— KnowFlow</div>
       <div class="echo-date" id="echoDate"></div>
     </div>
 
@@ -1551,7 +1551,7 @@ body {
 
 <script>
 // ============================================================
-// 嘘嘘 (Xūxū) - 核心应用逻辑
+// KnowFlow - 核心应用逻辑
 // ============================================================
 
 // --- CONFIG ---
@@ -1683,20 +1683,20 @@ function editPeriodDomains() {
 
 // --- BUILTIN QUOTES ---
 const BUILTIN_QUOTES = [
-  // 嘘嘘原创
-  { content: "工作只是人类发明的一种生存方式。几百年前大部分人种地，后来去工厂，再后来坐办公室。每次变革都有人焦虑，但人类并没有因此失去意义。", author: "嘘嘘" },
-  { content: "没有人知道十年后什么样。但历史告诉我们，人类的适应力比我们以为的强得多。", author: "嘘嘘" },
-  { content: "真正让人感到充实的，从来不是上班本身，而是创造感、连接感、成长感。", author: "嘘嘘" },
-  { content: "焦虑不是问题，停止行动才是。", author: "嘘嘘" },
-  { content: "不要跟 AI 比它擅长的，要做 AI 做不了或做不好的。", author: "嘘嘘" },
-  { content: "最危险的不是 AI 本身，而是会用 AI 的人替代不会用 AI 的人。", author: "嘘嘘" },
-  { content: "人的意义从来就不是工作。意义不在结果里，在过程里。", author: "嘘嘘" },
-  { content: "我们花了一辈子学怎么做事，却从没人教我们怎么找到自己真正想做的事。", author: "嘘嘘" },
-  { content: "做就是学。你现在搭的每一个东西，都是在给未来的自己铺路。", author: "嘘嘘" },
-  { content: "所有你乐此不疲的事情里，藏着你生活的答案。", author: "嘘嘘" },
-  { content: "空虚不是因为没事干，而是因为不知道自己想要什么。", author: "嘘嘘" },
-  { content: "创造而不只是消费。刷短视频是消费，拍短视频是创造。", author: "嘘嘘" },
-  { content: "别想着保住饭碗，想着让自己变成一个有趣的、能解决问题的、别人愿意合作的人。饭碗会变，但这样的人永远有饭吃。", author: "嘘嘘" },
+  // KnowFlow 原创
+  { content: "工作只是人类发明的一种生存方式。几百年前大部分人种地，后来去工厂，再后来坐办公室。每次变革都有人焦虑，但人类并没有因此失去意义。", author: "KnowFlow" },
+  { content: "没有人知道十年后什么样。但历史告诉我们，人类的适应力比我们以为的强得多。", author: "KnowFlow" },
+  { content: "真正让人感到充实的，从来不是上班本身，而是创造感、连接感、成长感。", author: "KnowFlow" },
+  { content: "焦虑不是问题，停止行动才是。", author: "KnowFlow" },
+  { content: "不要跟 AI 比它擅长的，要做 AI 做不了或做不好的。", author: "KnowFlow" },
+  { content: "最危险的不是 AI 本身，而是会用 AI 的人替代不会用 AI 的人。", author: "KnowFlow" },
+  { content: "人的意义从来就不是工作。意义不在结果里，在过程里。", author: "KnowFlow" },
+  { content: "我们花了一辈子学怎么做事，却从没人教我们怎么找到自己真正想做的事。", author: "KnowFlow" },
+  { content: "做就是学。你现在搭的每一个东西，都是在给未来的自己铺路。", author: "KnowFlow" },
+  { content: "所有你乐此不疲的事情里，藏着你生活的答案。", author: "KnowFlow" },
+  { content: "空虚不是因为没事干，而是因为不知道自己想要什么。", author: "KnowFlow" },
+  { content: "创造而不只是消费。刷短视频是消费，拍短视频是创造。", author: "KnowFlow" },
+  { content: "别想着保住饭碗，想着让自己变成一个有趣的、能解决问题的、别人愿意合作的人。饭碗会变，但这样的人永远有饭吃。", author: "KnowFlow" },
   // 文学 / 作家
   { content: "你不必活得像别人，你只需要活得像自己。", author: "林清玄" },
   { content: "人生没有白走的路，每一步都算数。", author: "李宗盛" },
@@ -1799,8 +1799,8 @@ const SD_QUESTIONS = [
 // --- GREETINGS ---
 function getGreeting() {
   const h = new Date().getHours();
-  const name = localStorage.getItem('xuxu_user_name') || '西西';
-  const botName = localStorage.getItem('xuxu_bot_name') || '嘘嘘';
+  const name = localStorage.getItem('xuxu_user_name') || '小明';
+  const botName = localStorage.getItem('xuxu_bot_name') || '小助手';
   const greetings = {
     morning: [`早上好${name}，今日待办已就绪 ☀️`, `早安${name}，新的一天开始了 🌅`],
     afternoon: [`下午好${name}，学习进度已更新 📋`, `${name}下午好，继续出摊 🌿`],
@@ -3040,7 +3040,7 @@ function setResonance(level) {
 function showAddQuote() {
   const content = prompt('输入你喜欢的语录：');
   if (!content) return;
-  const author = prompt('来源/作者（可选）：') || '西西收藏';
+  const author = prompt('来源/作者（可选）：') || '我的收藏';
   BUILTIN_QUOTES.push({ content, author });
   showToast('语录已添加 ✍️');
 }
@@ -3346,7 +3346,7 @@ function handleAuth() {
     if (error) { showToast(error.message); return; }
     currentUser = data.user;
     document.getElementById('authModal').classList.remove('show');
-    showToast(isAuthLogin ? '欢迎回来，西西 📋' : '账号创建成功，随时为你服务 🌿');
+    showToast(isAuthLogin ? '欢迎回来 📋' : '账号创建成功，随时为你服务 🌿');
     loadFromSupabase();
   });
 }
@@ -3860,7 +3860,7 @@ async function generateInsight() {
 
   const domainLabel = domain === 'all' ? '全部领域' : domain;
   const _name = localStorage.getItem('xuxu_user_name') || '你';
-  const _bot = localStorage.getItem('xuxu_bot_name') || '嘘嘘';
+  const _bot = localStorage.getItem('xuxu_bot_name') || '小助手';
   const prompt = `你是${_name}的学习秘书「${_bot}」。${_name}是一位正在自学 AI 编程、产品设计等方向的学习者。
 
 请根据她最近 ${days} 天在「${domainLabel}」的学习记录，生成一份学习成果总结。
