@@ -1577,7 +1577,7 @@ function getCurrentPeriod() {
 }
 
 function getAllPeriods() {
-  const stored = JSON.parse(localStorage.getItem('xuxu_periods') || '{}');
+  const stored = JSON.parse(localStorage.getItem('kf_periods') || '{}');
   const current = getCurrentPeriod();
   if (!stored[current]) {
     stored[current] = [
@@ -1588,7 +1588,7 @@ function getAllPeriods() {
       { name: '英语', icon: '🌍', color: '#D4895A' },
       { name: '其他', icon: '📚', color: '#8B7355' }
     ];
-    localStorage.setItem('xuxu_periods', JSON.stringify(stored));
+    localStorage.setItem('kf_periods', JSON.stringify(stored));
   }
   return stored;
 }
@@ -1636,10 +1636,10 @@ function switchPeriod(dir) {
   const newPeriod = `${y}${h===1?'H1':'H2'}`;
 
   // Ensure period exists
-  const stored = JSON.parse(localStorage.getItem('xuxu_periods') || '{}');
+  const stored = JSON.parse(localStorage.getItem('kf_periods') || '{}');
   if (!stored[newPeriod]) {
     stored[newPeriod] = [];
-    localStorage.setItem('xuxu_periods', JSON.stringify(stored));
+    localStorage.setItem('kf_periods', JSON.stringify(stored));
   }
 
   viewingPeriod = newPeriod;
@@ -1666,9 +1666,9 @@ function editPeriodDomains() {
     return { name: name || trimmed, icon, color: DEFAULT_DOMAIN_COLORS[i % DEFAULT_DOMAIN_COLORS.length] };
   }).filter(Boolean);
 
-  const stored = JSON.parse(localStorage.getItem('xuxu_periods') || '{}');
+  const stored = JSON.parse(localStorage.getItem('kf_periods') || '{}');
   stored[viewingPeriod] = newDomains;
-  localStorage.setItem('xuxu_periods', JSON.stringify(stored));
+  localStorage.setItem('kf_periods', JSON.stringify(stored));
 
   // If editing current period, refresh DOMAINS
   if (viewingPeriod === getCurrentPeriod()) {
@@ -1799,8 +1799,8 @@ const SD_QUESTIONS = [
 // --- GREETINGS ---
 function getGreeting() {
   const h = new Date().getHours();
-  const name = localStorage.getItem('xuxu_user_name') || '小明';
-  const botName = localStorage.getItem('xuxu_bot_name') || '小助手';
+  const name = localStorage.getItem('kf_user_name') || '小明';
+  const botName = localStorage.getItem('kf_bot_name') || '小助手';
   const greetings = {
     morning: [`早上好${name}，今日待办已就绪 ☀️`, `早安${name}，新的一天开始了 🌅`],
     afternoon: [`下午好${name}，学习进度已更新 📋`, `${name}下午好，继续出摊 🌿`],
@@ -1821,8 +1821,8 @@ function formatDate() {
 // --- INIT ---
 function initApp() {
   // Backup existing localStorage data before Supabase migration
-  if (!localStorage.getItem('xuxu_supabase_migrated')) {
-    ['xuxu_logs','xuxu_cards','xuxu_ideas','xuxu_projects','xuxu_journal'].forEach(key => {
+  if (!localStorage.getItem('kf_supabase_migrated')) {
+    ['kf_logs','kf_cards','kf_ideas','kf_projects','kf_journal'].forEach(key => {
       const v = localStorage.getItem(key);
       if (v && v !== '[]') localStorage.setItem(key + '_local', v);
     });
@@ -1838,33 +1838,33 @@ function initApp() {
     const yesterday = new Date(Date.now()-86400000).toISOString().split('T')[0];
     const twoDaysAgo = new Date(Date.now()-172800000).toISOString().split('T')[0];
 
-    localStorage.setItem('xuxu_user_name', '小明');
-    localStorage.setItem('xuxu_bot_name', '小助手');
+    localStorage.setItem('kf_user_name', '小明');
+    localStorage.setItem('kf_bot_name', '小助手');
 
-    localStorage.setItem('xuxu_logs', JSON.stringify([
+    localStorage.setItem('kf_logs', JSON.stringify([
       { date: today, domain: 'AI 编程', content: '用 Cursor 完成了第一个 Python 爬虫，爬取了豆瓣 Top250 的书单', duration_min: 60, created_at: today+'T10:00:00.000Z' },
       { date: yesterday, domain: '产品设计', content: '学习了用户旅程地图的绘制方法，用 Figma 画了第一版原型', duration_min: 90, created_at: yesterday+'T15:00:00.000Z' },
       { date: twoDaysAgo, domain: 'AI 编程', content: '了解了 Prompt Engineering 的基本原则，学会了 Few-shot 和 Chain-of-Thought', duration_min: 45, created_at: twoDaysAgo+'T20:00:00.000Z' },
     ]));
 
-    localStorage.setItem('xuxu_cards', JSON.stringify([
+    localStorage.setItem('kf_cards', JSON.stringify([
       { title: 'Cursor 常用快捷键', content: 'Cmd+K：内联编辑\nCmd+L：打开对话\nCmd+Shift+L：选中代码后发到对话', domain: 'AI 编程', tags: ['工具'], created_at: today+'T09:00:00.000Z' },
       { title: '用户旅程地图 5 步法', content: '1. 定义用户角色\n2. 列出关键阶段\n3. 描述用户行为\n4. 标注情绪起伏\n5. 找到机会点', domain: '产品设计', tags: ['方法论'], created_at: yesterday+'T14:00:00.000Z' },
       { title: 'Chain-of-Thought 提示词', content: '在 Prompt 末尾加上「让我们一步一步来思考」，AI 会输出更准确的推理过程', domain: 'AI 编程', tags: ['Prompt'], created_at: twoDaysAgo+'T19:00:00.000Z' },
     ]));
 
-    localStorage.setItem('xuxu_ideas', JSON.stringify([
+    localStorage.setItem('kf_ideas', JSON.stringify([
       { content: '用 AI 自动整理会议记录，生成待办事项，发给相关人', status: 'explore', note: '', created_at: today+'T08:00:00.000Z' },
       { content: '做一个部门知识库，把大家散落在各处的文档用 AI 统一整理', status: 'doing', note: '正在研究 Notion + AI 的方案', created_at: yesterday+'T10:00:00.000Z' },
       { content: '用 AI 生成每周工作总结，减少写报告的时间', status: 'done', landed_at: twoDaysAgo, created_at: twoDaysAgo+'T09:00:00.000Z' },
     ]));
 
-    localStorage.setItem('xuxu_journal', JSON.stringify([
+    localStorage.setItem('kf_journal', JSON.stringify([
       { type: 'discovery', prompt: '你觉得 AI 时代最重要的能力是什么？', content: '我觉得是「提问能力」。AI 再强大，也需要你知道问什么、怎么问。会问问题的人，才能把 AI 用好。', mood: '🤔', created_at: today+'T12:00:00.000Z' },
       { type: 'diary', prompt: '', content: '今天用 AI 帮我写了一封棘手的邮件，效果出乎意料地好。原来 AI 不只是写代码，也可以处理人际沟通。慢慢发现 AI 可以嵌入到工作的方方面面。', mood: '😊', created_at: yesterday+'T22:00:00.000Z' },
     ]));
 
-    localStorage.setItem('xuxu_projects', JSON.stringify([
+    localStorage.setItem('kf_projects', JSON.stringify([
       {
         title: 'AI 学习秘书（本站）',
         description: '用 vibe coding 独立开发的个人学习追踪工具，支持打卡记录、知识卡片、AI 日报、学习看板等功能，一周从 0 到上线。',
@@ -1907,7 +1907,7 @@ function initApp() {
 
   // 初始化用户名和秘书名
   try {
-    const botName = localStorage.getItem('xuxu_bot_name') || '小助手';
+    const botName = localStorage.getItem('kf_bot_name') || '小助手';
     document.getElementById('logoText').textContent = '我是' + botName;
     document.title = botName + ' - 你的电子秘书';
   } catch(e) {}
@@ -1970,7 +1970,7 @@ function switchPanel(name) {
 // --- HEATMAP ---
 function initHeatmap() {
   const wrap = document.getElementById('heatmapWrap');
-  const logs = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
+  const logs = JSON.parse(localStorage.getItem('kf_logs') || '[]');
 
   // Count minutes per date
   const dateCounts = {};
@@ -2146,12 +2146,12 @@ function submitCheckinModal() {
   };
 
   // Write to localStorage（防重复：同日期同内容不重复写）
-  const logs = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
+  const logs = JSON.parse(localStorage.getItem('kf_logs') || '[]');
   if (logs.some(l => l.date === log.date && l.content === log.content)) {
     showToast('已有相同打卡记录，未重复保存'); closeCheckinModal(); return;
   }
   logs.unshift(log);
-  localStorage.setItem('xuxu_logs', JSON.stringify(logs));
+  localStorage.setItem('kf_logs', JSON.stringify(logs));
 
   // Write to Supabase
   dbInsert('daily_logs', { date: log.date, domain: log.domain, content: log.content, duration_min: log.duration_min, created_at: log.created_at });
@@ -2164,10 +2164,10 @@ function submitCheckinModal() {
       tags: ['打卡记录'],
       created_at: new Date().toISOString()
     };
-    const cards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
+    const cards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
     if (!cards.some(c => c.title === cardData.title && c.content === cardData.content)) {
       cards.unshift(cardData);
-      localStorage.setItem('xuxu_cards', JSON.stringify(cards));
+      localStorage.setItem('kf_cards', JSON.stringify(cards));
       dbInsert('knowledge_cards', { title: cardData.title, content: cardData.content, domain: cardData.domain, tags: cardData.tags, created_at: cardData.created_at });
     }
   }
@@ -2184,7 +2184,7 @@ function submitCheckinModal() {
 }
 
 function renderTimeline() {
-  const logs = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
+  const logs = JSON.parse(localStorage.getItem('kf_logs') || '[]');
   const tl = document.getElementById('checkinTimeline');
   if (!logs.length) {
     tl.innerHTML = '<div class="empty-state"><div class="empty-icon">📝</div><div class="empty-msg">还没有学习记录</div></div>';
@@ -2203,10 +2203,10 @@ function renderTimeline() {
 }
 
 function syncLogToCard(idx) {
-  const logs = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
+  const logs = JSON.parse(localStorage.getItem('kf_logs') || '[]');
   const l = logs[idx];
   if (!l) return;
-  const cards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
+  const cards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
   cards.unshift({
     title: `${l.domain} · ${l.date}`,
     content: l.content,
@@ -2214,13 +2214,13 @@ function syncLogToCard(idx) {
     tags: ['打卡记录'],
     created_at: l.created_at || new Date().toISOString()
   });
-  localStorage.setItem('xuxu_cards', JSON.stringify(cards));
+  localStorage.setItem('kf_cards', JSON.stringify(cards));
   renderCards(currentCardFilter);
   showToast('已同步到知识卡片');
 }
 
 function editLog(idx) {
-  const logs = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
+  const logs = JSON.parse(localStorage.getItem('kf_logs') || '[]');
   const l = logs[idx];
   if (!l) return;
   const content = prompt('修改内容：', l.content);
@@ -2233,7 +2233,7 @@ function editLog(idx) {
   const validDomain = DOMAINS.find(d => d.name === domain?.trim())?.name || l.domain;
   logs[idx] = { ...l, content: content.trim() || l.content, domain: validDomain, duration_min: parseInt(duration) || l.duration_min };
 
-  localStorage.setItem('xuxu_logs', JSON.stringify(logs));
+  localStorage.setItem('kf_logs', JSON.stringify(logs));
   renderTimeline();
   updateStats();
   showToast('已更新');
@@ -2241,11 +2241,11 @@ function editLog(idx) {
 
 function deleteLog(idx) {
   if (!confirm('确定删除这条学习记录吗？')) return;
-  const logs = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
+  const logs = JSON.parse(localStorage.getItem('kf_logs') || '[]');
   const target = logs[idx];
   if (target?.id) dbDelete('daily_logs', target.id);
   logs.splice(idx, 1);
-  localStorage.setItem('xuxu_logs', JSON.stringify(logs));
+  localStorage.setItem('kf_logs', JSON.stringify(logs));
   renderTimeline();
   updateStats();
   initHeatmap();
@@ -2265,7 +2265,7 @@ function initCardFilters() {
 
 function renderCards(filter='all') {
   currentCardFilter = filter;
-  const cards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
+  const cards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
   const el = document.getElementById('cardsMasonry');
   const filtered = filter === 'all' ? cards : cards.filter(c => c.domain === filter);
   if (!filtered.length) {
@@ -2336,7 +2336,7 @@ function filterCards(f, btn) {
 }
 
 function searchCards(keyword) {
-  const cards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
+  const cards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
   const el = document.getElementById('cardsMasonry');
   const kw = keyword.toLowerCase().trim();
   if (!kw) { renderCards(currentCardFilter); return; }
@@ -2387,7 +2387,7 @@ function openCardModal(idx) {
   ).join('');
 
   if (isEdit) {
-    const cards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
+    const cards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
     const c = cards[idx];
     if (!c) return;
     document.getElementById('cardModalName').value = c.title || '';
@@ -2429,12 +2429,12 @@ function submitCardModal() {
   const dateVal = document.getElementById('cardModalDate').value;
   const created_at = dateVal ? new Date(dateVal + 'T12:00:00').toISOString() : new Date().toISOString();
 
-  const cards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
+  const cards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
 
   if (editingCardIdx >= 0) {
     const c = cards[editingCardIdx];
     cards[editingCardIdx] = { ...c, title, content, domain, tags, ref_url, created_at };
-    localStorage.setItem('xuxu_cards', JSON.stringify(cards));
+    localStorage.setItem('kf_cards', JSON.stringify(cards));
     if (c.id) dbUpdate('knowledge_cards', c.id, { title, content, domain, tags, created_at });
     showToast('卡片已更新');
   } else {
@@ -2443,7 +2443,7 @@ function submitCardModal() {
     }
     const newCard = { title, content, domain, tags, ref_url, created_at };
     cards.unshift(newCard);
-    localStorage.setItem('xuxu_cards', JSON.stringify(cards));
+    localStorage.setItem('kf_cards', JSON.stringify(cards));
     dbInsert('knowledge_cards', { title, content, domain, tags, ref_url: ref_url||null, created_at: newCard.created_at });
     showToast('卡片已添加');
   }
@@ -2454,11 +2454,11 @@ function submitCardModal() {
 
 function deleteCard(idx) {
   if (!confirm('确定删除这张卡片吗？')) return;
-  const cards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
+  const cards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
   const c = cards[idx];
   if (c?.id) dbDelete('knowledge_cards', c.id);
   cards.splice(idx, 1);
-  localStorage.setItem('xuxu_cards', JSON.stringify(cards));
+  localStorage.setItem('kf_cards', JSON.stringify(cards));
   renderCards(currentCardFilter);
   showToast('卡片已删除');
 }
@@ -2549,14 +2549,14 @@ function submitProjectModal() {
   const doc_path = document.getElementById('projModalDoc').value.trim();
   const image_url = pendingProjectImage || '';
 
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   const editIdx = document.getElementById('projectModal').dataset.editIdx;
 
   if (editIdx !== '' && editIdx !== undefined && editIdx >= 0) {
     const p = projects[editIdx];
     const finalImg = image_url || p.image_url || '';
     projects[editIdx] = { ...p, title, description, url, doc_path, image_url: finalImg, completed_at };
-    localStorage.setItem('xuxu_projects', JSON.stringify(projects));
+    localStorage.setItem('kf_projects', JSON.stringify(projects));
     if (p && p.id) dbUpdate('projects', p.id, { title, description, url: url||null, doc_path: doc_path||null, image_url: finalImg||null, completed_at });
     showToast('作品已更新');
   } else {
@@ -2565,7 +2565,7 @@ function submitProjectModal() {
     }
     const newProject = { title, description, url, doc_path, image_url, completed_at, created_at: new Date().toISOString() };
     projects.unshift(newProject);
-    localStorage.setItem('xuxu_projects', JSON.stringify(projects));
+    localStorage.setItem('kf_projects', JSON.stringify(projects));
     dbInsert('projects', { title, description, url: url||null, doc_path: doc_path||null, image_url: image_url||null, completed_at, created_at: newProject.created_at });
     showToast('作品已添加');
   }
@@ -2575,7 +2575,7 @@ function submitProjectModal() {
 }
 
 function renderPortfolio() {
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   // 排序只用于渲染，不写回 localStorage
   const sorted = [...projects].sort((a, b) => (b.completed_at || '').localeCompare(a.completed_at || ''));
   const el = document.getElementById('portfolioGrid');
@@ -2609,7 +2609,7 @@ function renderPortfolio() {
 }
 
 function editProject(idx) {
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   const p = projects[idx];
   if (!p) return;
   document.getElementById('projectModalTitle').textContent = '编辑作品';
@@ -2637,11 +2637,11 @@ function editProject(idx) {
 
 function deleteProject(idx) {
   if (!confirm('确定删除这个作品吗？')) return;
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   const p = projects[idx];
   if (p?.id) dbDelete('projects', p.id);
   projects.splice(idx, 1);
-  localStorage.setItem('xuxu_projects', JSON.stringify(projects));
+  localStorage.setItem('kf_projects', JSON.stringify(projects));
   renderPortfolio();
   showToast('已删除');
 }
@@ -2651,7 +2651,7 @@ let detailProjectIdx = -1;
 
 function openProjectDetail(idx) {
   detailProjectIdx = idx;
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   const p = projects[idx];
   if (!p) return;
 
@@ -2679,7 +2679,7 @@ function closeProjectDetail() {
 }
 
 function renderPhases() {
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   const p = projects[detailProjectIdx];
   if (!p) return;
   const phases = p.phases || [];
@@ -2727,7 +2727,7 @@ function toggleEditPhase(phaseIdx) {
 }
 
 function showPhaseForm(phaseIdx) {
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   const p = projects[detailProjectIdx];
   const isEdit = phaseIdx >= 0;
   const ph = isEdit ? p.phases[phaseIdx] : null;
@@ -2825,7 +2825,7 @@ function savePhaseForm(formId, phaseIdx) {
     if (label || value) fields.push({ label: label || '备注', value });
   });
 
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   const p = projects[detailProjectIdx];
   if (!p.phases) p.phases = [];
 
@@ -2835,7 +2835,7 @@ function savePhaseForm(formId, phaseIdx) {
     p.phases.push({ name, date, fields });
   }
 
-  localStorage.setItem('xuxu_projects', JSON.stringify(projects));
+  localStorage.setItem('kf_projects', JSON.stringify(projects));
   if (p.id) dbUpdate('projects', p.id, { phases: p.phases });
   renderPhases();
   showToast(phaseIdx >= 0 ? '阶段已更新' : '阶段已添加');
@@ -2847,10 +2847,10 @@ function cancelPhaseForm() {
 
 function deletePhase(phaseIdx) {
   if (!confirm('确定删除这个阶段记录吗？')) return;
-  const projects = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
+  const projects = JSON.parse(localStorage.getItem('kf_projects') || '[]');
   const p = projects[detailProjectIdx];
   p.phases.splice(phaseIdx, 1);
-  localStorage.setItem('xuxu_projects', JSON.stringify(projects));
+  localStorage.setItem('kf_projects', JSON.stringify(projects));
   if (p.id) dbUpdate('projects', p.id, { phases: p.phases });
   renderPhases();
   showToast('已删除');
@@ -2877,7 +2877,7 @@ function openIdeaModal(idx) {
   document.getElementById('ideaModalNoteWrap').style.display = 'none';
 
   if (isEdit) {
-    const ideas = JSON.parse(localStorage.getItem('xuxu_ideas') || '[]');
+    const ideas = JSON.parse(localStorage.getItem('kf_ideas') || '[]');
     const idea = ideas[idx];
     if (!idea) return;
     document.getElementById('ideaModalContent').value = idea.content || '';
@@ -2913,7 +2913,7 @@ function submitIdeaModal() {
   const status = statusBtn ? statusBtn.dataset.status : 'explore';
   const note = document.getElementById('ideaModalNote').value.trim();
 
-  const ideas = JSON.parse(localStorage.getItem('xuxu_ideas') || '[]');
+  const ideas = JSON.parse(localStorage.getItem('kf_ideas') || '[]');
   const now = new Date().toISOString();
 
   if (editingIdeaIdx >= 0) {
@@ -2922,7 +2922,7 @@ function submitIdeaModal() {
       ? new Date().toISOString().split('T')[0]
       : (status === 'done' ? old.landed_at : null);
     ideas[editingIdeaIdx] = { ...old, content, status, note, landed_at };
-    localStorage.setItem('xuxu_ideas', JSON.stringify(ideas));
+    localStorage.setItem('kf_ideas', JSON.stringify(ideas));
     if (old.id) dbUpdate('ideas', old.id, { content, status, note, landed_at });
     showToast('灵感已更新');
   } else {
@@ -2930,7 +2930,7 @@ function submitIdeaModal() {
     if (ideas.some(i => i.content === content)) { closeIdeaModal(); showToast('已有相同灵感，未重复保存'); return; }
     const idea = { content, status, note, created_at: now };
     ideas.unshift(idea);
-    localStorage.setItem('xuxu_ideas', JSON.stringify(ideas));
+    localStorage.setItem('kf_ideas', JSON.stringify(ideas));
     dbInsert('ideas', { content, status, note: note || null, created_at: now });
     showToast('灵感已记下 💡');
   }
@@ -2941,7 +2941,7 @@ function submitIdeaModal() {
 }
 
 function renderIdeas() {
-  const ideas = JSON.parse(localStorage.getItem('xuxu_ideas') || '[]');
+  const ideas = JSON.parse(localStorage.getItem('kf_ideas') || '[]');
   const el = document.getElementById('ideasList');
   if (!ideas.length) {
     el.innerHTML = '<div class="empty-state"><div class="empty-icon">💡</div><div class="empty-msg">脑袋放空也是一种创造力</div></div>';
@@ -2972,28 +2972,28 @@ function renderIdeas() {
 
 function deleteIdea(idx) {
   if (!confirm('确定删除这条灵感吗？')) return;
-  const ideas = JSON.parse(localStorage.getItem('xuxu_ideas') || '[]');
+  const ideas = JSON.parse(localStorage.getItem('kf_ideas') || '[]');
   const idea = ideas[idx];
   ideas.splice(idx, 1);
-  localStorage.setItem('xuxu_ideas', JSON.stringify(ideas));
+  localStorage.setItem('kf_ideas', JSON.stringify(ideas));
   if (idea && idea.id) dbDelete('ideas', idea.id);
   renderIdeas(); updateStats();
 }
 
 // --- ECHO VALLEY ---
 function loadCurrentQuote() {
-  const shown = JSON.parse(localStorage.getItem('xuxu_shown_quotes') || '[]');
+  const shown = JSON.parse(localStorage.getItem('kf_shown_quotes') || '[]');
   const total = BUILTIN_QUOTES.length;
 
   // 所有都显示过了就重置
   if (shown.length >= total) {
-    localStorage.setItem('xuxu_shown_quotes', '[]');
+    localStorage.setItem('kf_shown_quotes', '[]');
     shown.length = 0;
   }
 
   // 今天是否已经选了
   const todayKey = new Date().toISOString().split('T')[0];
-  const todayQuoteIdx = localStorage.getItem('xuxu_today_quote_' + todayKey);
+  const todayQuoteIdx = localStorage.getItem('kf_today_quote_' + todayKey);
   if (todayQuoteIdx !== null) {
     currentQuoteIndex = parseInt(todayQuoteIdx);
     displayQuote(currentQuoteIndex);
@@ -3005,8 +3005,8 @@ function loadCurrentQuote() {
   const pick = available[Math.floor(Math.random() * available.length)];
   currentQuoteIndex = pick;
   shown.push(pick);
-  localStorage.setItem('xuxu_shown_quotes', JSON.stringify(shown));
-  localStorage.setItem('xuxu_today_quote_' + todayKey, String(pick));
+  localStorage.setItem('kf_shown_quotes', JSON.stringify(shown));
+  localStorage.setItem('kf_today_quote_' + todayKey, String(pick));
   displayQuote(currentQuoteIndex);
 }
 
@@ -3097,7 +3097,7 @@ function submitJournalModal() {
   if (!content) { showToast('写点什么再保存~'); return; }
 
   const isDiscovery = journalModalType === 'discovery';
-  const entries = JSON.parse(localStorage.getItem('xuxu_journal') || '[]');
+  const entries = JSON.parse(localStorage.getItem('kf_journal') || '[]');
 
   const entry = {
     type: isDiscovery ? 'discovery' : 'diary',
@@ -3113,7 +3113,7 @@ function submitJournalModal() {
   if (isDuplicate) { closeJournalModal(); showToast('已有相同记录，未重复保存'); return; }
 
   entries.unshift(entry);
-  localStorage.setItem('xuxu_journal', JSON.stringify(entries));
+  localStorage.setItem('kf_journal', JSON.stringify(entries));
 
   // Sync to Supabase
   dbInsert('journal', { type: entry.type, prompt: entry.prompt, content: entry.content, mood: entry.mood, created_at: entry.created_at });
@@ -3144,7 +3144,7 @@ function renderJournalEntries() {
   // Merge legacy data into journal on first load
   migrateToJournal();
 
-  const allEntries = JSON.parse(localStorage.getItem('xuxu_journal') || '[]');
+  const allEntries = JSON.parse(localStorage.getItem('kf_journal') || '[]');
   const filtered = journalFilter === 'all' ? allEntries : allEntries.filter(e => e.type === journalFilter);
   const el = document.getElementById('journalEntries');
   const moreBtn = document.getElementById('journalMoreBtn');
@@ -3188,7 +3188,7 @@ async function translateJournalEntry(idx, btn) {
   btn.textContent = '翻译中...';
   btn.disabled = true;
 
-  const entries = JSON.parse(localStorage.getItem('xuxu_journal') || '[]');
+  const entries = JSON.parse(localStorage.getItem('kf_journal') || '[]');
   const filtered = journalFilter === 'all' ? entries : entries.filter(e => e.type === journalFilter);
   const entry = filtered[idx];
   if (!entry) { btn.textContent = '🌍 翻译成英文'; btn.disabled = false; return; }
@@ -3210,7 +3210,7 @@ async function translateJournalEntry(idx, btn) {
       const realIdx = entries.indexOf(entry);
       if (realIdx > -1) {
         entries[realIdx].content_en = en;
-        localStorage.setItem('xuxu_journal', JSON.stringify(entries));
+        localStorage.setItem('kf_journal', JSON.stringify(entries));
         // 存回 Supabase
         if (entry.id) dbUpdate('journal', entry.id, { content_en: en });
       }
@@ -3228,41 +3228,41 @@ async function translateJournalEntry(idx, btn) {
 
 function deleteJournalEntry(idx) {
   if (!confirm('确定删除这条记录吗？')) return;
-  const entries = JSON.parse(localStorage.getItem('xuxu_journal') || '[]');
+  const entries = JSON.parse(localStorage.getItem('kf_journal') || '[]');
   const filtered = journalFilter === 'all' ? entries : entries.filter(e => e.type === journalFilter);
   const target = filtered[idx];
   const realIdx = entries.indexOf(target);
   if (realIdx > -1) entries.splice(realIdx, 1);
   if (target && target.id) dbDelete('journal', target.id);
-  localStorage.setItem('xuxu_journal', JSON.stringify(entries));
+  localStorage.setItem('kf_journal', JSON.stringify(entries));
   renderJournalEntries();
   showToast('已删除');
 }
 
 function migrateToJournal() {
-  if (localStorage.getItem('xuxu_journal_migrated')) return;
-  const journal = JSON.parse(localStorage.getItem('xuxu_journal') || '[]');
+  if (localStorage.getItem('kf_journal_migrated')) return;
+  const journal = JSON.parse(localStorage.getItem('kf_journal') || '[]');
 
   // Migrate old diary entries
-  const oldDiary = JSON.parse(localStorage.getItem('xuxu_diary') || '[]');
+  const oldDiary = JSON.parse(localStorage.getItem('kf_diary') || '[]');
   oldDiary.forEach(e => {
     journal.push({ type: 'diary', prompt: null, content: e.content, mood: e.mood || '😌', created_at: e.created_at });
   });
 
   // Migrate old discoveries
-  const oldDisc = JSON.parse(localStorage.getItem('xuxu_discoveries') || '[]');
+  const oldDisc = JSON.parse(localStorage.getItem('kf_discoveries') || '[]');
   oldDisc.forEach(e => {
     journal.push({ type: 'discovery', prompt: e.question, content: e.answer, mood: '😌', created_at: e.created_at });
   });
 
   // Sort by date desc
   journal.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-  localStorage.setItem('xuxu_journal', JSON.stringify(journal));
-  localStorage.setItem('xuxu_journal_migrated', '1');
+  localStorage.setItem('kf_journal', JSON.stringify(journal));
+  localStorage.setItem('kf_journal_migrated', '1');
 }
 
 function showJourney() {
-  const entries = JSON.parse(localStorage.getItem('xuxu_journal') || '[]')
+  const entries = JSON.parse(localStorage.getItem('kf_journal') || '[]')
     .filter(e => e.type === 'discovery')
     .reverse();
   let msg = '🔭 回看旅程\n\n';
@@ -3285,9 +3285,9 @@ function linkify(text) {
 
 // --- STATS ---
 function updateStats() {
-  const logs = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
-  const cards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
-  const ideas = JSON.parse(localStorage.getItem('xuxu_ideas') || '[]');
+  const logs = JSON.parse(localStorage.getItem('kf_logs') || '[]');
+  const cards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
+  const ideas = JSON.parse(localStorage.getItem('kf_ideas') || '[]');
 
   // Weekly hours
   const weekAgo = new Date(); weekAgo.setDate(weekAgo.getDate() - 7);
@@ -3360,9 +3360,9 @@ function toggleAuthMode() {
 }
 
 function editNames() {
-  const cur_user = localStorage.getItem('xuxu_user_name') || '小明';
-  const cur_bot = localStorage.getItem('xuxu_bot_name') || '小助手';
-  const cur_key = localStorage.getItem('xuxu_zhipu_key') || '';
+  const cur_user = localStorage.getItem('kf_user_name') || '小明';
+  const cur_bot = localStorage.getItem('kf_bot_name') || '小助手';
+  const cur_key = localStorage.getItem('kf_zhipu_key') || '';
   const html = `<div id="nameEditPanel" style="position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#fff;border-radius:16px;padding:28px 32px;box-shadow:0 8px 40px rgba(0,0,0,0.15);z-index:9999;min-width:340px;">
     <h3 style="font-size:16px;font-weight:700;margin-bottom:20px;">⚙️ 个人设置</h3>
     <label style="font-size:12px;color:var(--text-muted);display:block;margin-bottom:4px;">你的名字</label>
@@ -3385,13 +3385,13 @@ function saveNames() {
   const uname = document.getElementById('nameEditUser').value.trim();
   const bname = document.getElementById('nameEditBot').value.trim();
   const key = document.getElementById('nameEditKey').value.trim();
-  if (uname) localStorage.setItem('xuxu_user_name', uname);
+  if (uname) localStorage.setItem('kf_user_name', uname);
   if (bname) {
-    localStorage.setItem('xuxu_bot_name', bname);
+    localStorage.setItem('kf_bot_name', bname);
     document.getElementById('logoText').textContent = '我是' + bname;
     document.title = bname + ' - 你的电子秘书';
   }
-  if (key) localStorage.setItem('xuxu_zhipu_key', key);
+  if (key) localStorage.setItem('kf_zhipu_key', key);
   document.getElementById('nameEditPanel').remove();
   document.getElementById('nameEditOverlay').remove();
   document.getElementById('greetingText').textContent = getGreeting();
@@ -3435,7 +3435,7 @@ function renderDailyList(elId, items, emptyIcon, emptyMsg) {
     el.innerHTML = `<div class="empty-state"><div class="empty-icon">${emptyIcon}</div><div class="empty-msg">${emptyMsg}</div></div>`;
     return;
   }
-  const favs = JSON.parse(localStorage.getItem('xuxu_daily_favs') || '[]');
+  const favs = JSON.parse(localStorage.getItem('kf_daily_favs') || '[]');
   el.innerHTML = items.map((item, i) => {
     const isFaved = favs.some(f => f.title === item.title);
     return `<div class="daily-item">
@@ -3458,7 +3458,7 @@ function renderDailyList(elId, items, emptyIcon, emptyMsg) {
 }
 
 function toggleDailyFav(btn, item) {
-  const favs = JSON.parse(localStorage.getItem('xuxu_daily_favs') || '[]');
+  const favs = JSON.parse(localStorage.getItem('kf_daily_favs') || '[]');
   const idx = favs.findIndex(f => f.title === item.title);
   if (idx >= 0) {
     favs.splice(idx, 1);
@@ -3469,13 +3469,13 @@ function toggleDailyFav(btn, item) {
     btn.classList.add('faved');
     showToast('已收藏');
   }
-  localStorage.setItem('xuxu_daily_favs', JSON.stringify(favs));
+  localStorage.setItem('kf_daily_favs', JSON.stringify(favs));
   renderFavorites();
   updateFavCount();
 }
 
 function renderFavorites() {
-  const favs = JSON.parse(localStorage.getItem('xuxu_daily_favs') || '[]');
+  const favs = JSON.parse(localStorage.getItem('kf_daily_favs') || '[]');
   const el = document.getElementById('favoritesList');
   if (!favs.length) {
     el.innerHTML = '<div class="empty-state"><div class="empty-icon">📌</div><div class="empty-msg">还没有收藏，点新闻旁边的 ★ 收藏</div></div>';
@@ -3500,9 +3500,9 @@ function renderFavorites() {
 }
 
 function removeFav(idx) {
-  const favs = JSON.parse(localStorage.getItem('xuxu_daily_favs') || '[]');
+  const favs = JSON.parse(localStorage.getItem('kf_daily_favs') || '[]');
   favs.splice(idx, 1);
-  localStorage.setItem('xuxu_daily_favs', JSON.stringify(favs));
+  localStorage.setItem('kf_daily_favs', JSON.stringify(favs));
   renderFavorites();
   updateFavCount();
   loadAutoDaily();
@@ -3510,16 +3510,16 @@ function removeFav(idx) {
 }
 
 function updateFavCount() {
-  const favs = JSON.parse(localStorage.getItem('xuxu_daily_favs') || '[]');
+  const favs = JSON.parse(localStorage.getItem('kf_daily_favs') || '[]');
   document.getElementById('favCount').textContent = favs.length ? `(${favs.length})` : '';
 }
 
 // --- BOOKMARKS ---
 function getBookmarks() {
-  return JSON.parse(localStorage.getItem('xuxu_bookmarks') || '[]');
+  return JSON.parse(localStorage.getItem('kf_bookmarks') || '[]');
 }
 function saveBookmarks(data) {
-  localStorage.setItem('xuxu_bookmarks', JSON.stringify(data));
+  localStorage.setItem('kf_bookmarks', JSON.stringify(data));
 }
 
 function initBookmarks() {
@@ -3725,11 +3725,11 @@ async function loadFromSupabase() {
     ]);
 
     // Store to localStorage as cache
-    if (logs.data) localStorage.setItem('xuxu_logs', JSON.stringify(logs.data.map(l => ({ ...l, duration_min: l.duration_min }))));
-    if (cards.data) localStorage.setItem('xuxu_cards', JSON.stringify(cards.data.map(c => ({ ...c, tags: Array.isArray(c.tags) ? c.tags : [] }))));
-    if (ideas.data) localStorage.setItem('xuxu_ideas', JSON.stringify(ideas.data));
-    if (projects.data) localStorage.setItem('xuxu_projects', JSON.stringify(projects.data));
-    if (journal.data) localStorage.setItem('xuxu_journal', JSON.stringify(journal.data));
+    if (logs.data) localStorage.setItem('kf_logs', JSON.stringify(logs.data.map(l => ({ ...l, duration_min: l.duration_min }))));
+    if (cards.data) localStorage.setItem('kf_cards', JSON.stringify(cards.data.map(c => ({ ...c, tags: Array.isArray(c.tags) ? c.tags : [] }))));
+    if (ideas.data) localStorage.setItem('kf_ideas', JSON.stringify(ideas.data));
+    if (projects.data) localStorage.setItem('kf_projects', JSON.stringify(projects.data));
+    if (journal.data) localStorage.setItem('kf_journal', JSON.stringify(journal.data));
 
     loadFromLocalStorage();
     showToast('数据已同步');
@@ -3741,21 +3741,21 @@ async function loadFromSupabase() {
 
 async function migrateLocalToSupabase() {
   if (!sbClient) return;
-  if (localStorage.getItem('xuxu_supabase_migrated')) return;
+  if (localStorage.getItem('kf_supabase_migrated')) return;
 
   // 双重保护：Supabase 已有数据就不迁移，避免重复
   const { count } = await sbClient.from('daily_logs').select('id', { count: 'exact', head: true });
   if (count > 0) {
-    localStorage.setItem('xuxu_supabase_migrated', '1');
+    localStorage.setItem('kf_supabase_migrated', '1');
     return;
   }
 
   // Read from original keys (not _local backup keys)
-  const logsRaw = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
-  const cardsRaw = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
-  const ideasRaw = JSON.parse(localStorage.getItem('xuxu_ideas') || '[]');
-  const projectsRaw = JSON.parse(localStorage.getItem('xuxu_projects') || '[]');
-  const journalRaw = JSON.parse(localStorage.getItem('xuxu_journal') || '[]');
+  const logsRaw = JSON.parse(localStorage.getItem('kf_logs') || '[]');
+  const cardsRaw = JSON.parse(localStorage.getItem('kf_cards') || '[]');
+  const ideasRaw = JSON.parse(localStorage.getItem('kf_ideas') || '[]');
+  const projectsRaw = JSON.parse(localStorage.getItem('kf_projects') || '[]');
+  const journalRaw = JSON.parse(localStorage.getItem('kf_journal') || '[]');
 
   // Only migrate if there's data in the legacy backup keys
   const migrations = [];
@@ -3768,7 +3768,7 @@ async function migrateLocalToSupabase() {
   if (migrations.length) {
     await Promise.allSettled(migrations);
   }
-  localStorage.setItem('xuxu_supabase_migrated', '1');
+  localStorage.setItem('kf_supabase_migrated', '1');
 }
 
 // --- DB WRITE HELPERS ---
@@ -3810,8 +3810,8 @@ async function generateInsight() {
   cutoff.setDate(cutoff.getDate() - days);
   const cutoffStr = cutoff.toISOString();
 
-  const allLogs = JSON.parse(localStorage.getItem('xuxu_logs') || '[]');
-  const allCards = JSON.parse(localStorage.getItem('xuxu_cards') || '[]');
+  const allLogs = JSON.parse(localStorage.getItem('kf_logs') || '[]');
+  const allCards = JSON.parse(localStorage.getItem('kf_cards') || '[]');
 
   const logs = allLogs.filter(l => {
     const inRange = (l.created_at || l.date) >= cutoffStr.split('T')[0];
@@ -3859,8 +3859,8 @@ async function generateInsight() {
   const cardsText = recentCards.map((c, i) => `${i+1}. ${c.title}：${(c.content||'').slice(0,60)}`).join('\n');
 
   const domainLabel = domain === 'all' ? '全部领域' : domain;
-  const _name = localStorage.getItem('xuxu_user_name') || '你';
-  const _bot = localStorage.getItem('xuxu_bot_name') || '小助手';
+  const _name = localStorage.getItem('kf_user_name') || '你';
+  const _bot = localStorage.getItem('kf_bot_name') || '小助手';
   const prompt = `你是${_name}的学习秘书「${_bot}」。${_name}是一位正在自学 AI 编程、产品设计等方向的学习者。
 
 请根据她最近 ${days} 天在「${domainLabel}」的学习记录，生成一份学习成果总结。
@@ -3942,7 +3942,7 @@ ${cardsText || '（无知识卡片）'}`;
 }
 
 function getZhipuKey() {
-  return localStorage.getItem('xuxu_zhipu_key') || '';
+  return localStorage.getItem('kf_zhipu_key') || '';
 }
 
 // --- UTILS ---
